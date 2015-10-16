@@ -8,7 +8,6 @@
 
 static void startothers(void);
 static void mpmain(void)  __attribute__((noreturn));
-extern pde_t *kpgdir;
 extern char end[]; // first address after kernel loaded from ELF file
 
 // Bootstrap processor starts running C code here.
@@ -99,7 +98,7 @@ startothers(void)
 
 // The boot page table used in entry.S and entryother.S.
 // Page directories (and page tables) must start on page boundaries,
-// hence the __aligned__ attribute.
+// hence the "__aligned__" attribute.
 // PTE_PS in a page directory entry enables 4Mbyte pages.
 
 __attribute__((__aligned__(PGSIZE)))
