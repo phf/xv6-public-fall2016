@@ -45,7 +45,7 @@ mpsearch1(uint a, int len)
 // spec is in one of the following three locations:
 // 1) in the first KB of the EBDA;
 // 2) in the last KB of system base memory;
-// 3) in the BIOS ROM between 0xE0000 and 0xFFFFF.
+// 3) in the BIOS ROM between 0xF0000 and 0xFFFFF.
 static struct mp*
 mpsearch(void)
 {
@@ -81,7 +81,7 @@ mpconfig(struct mp **pmp)
   conf = (struct mpconf*) P2V((uint) mp->physaddr);
   if(memcmp(conf, "PCMP", 4) != 0)
     return 0;
-  if(conf->version != 1 && conf->version != 4)
+  if(conf->specrev != 1 && conf->specrev != 4)
     return 0;
   if(sum((uchar*)conf, conf->length) != 0)
     return 0;
@@ -106,15 +106,37 @@ mpinit(void)
     switch(*p){
     case MPPROC:
       proc = (struct mpproc*)p;
-      if(ncpu < NCPU) {
-        cpus[ncpu].apicid = proc->apicid;  // apicid may differ from ncpu
-        ncpu++;
+      if(!(proc->flags & MP_PROC_ENABLED)){
+        cprintf("mpinit: ignoring cpu %d, not enabled\n", proc->apicid);
+        p += sizeof(struct mpproc);
+        continue;
       }
+      if(!(proc->feature & MP_PROC_APIC)){
+        cprintf("mpinit: cpu %d has no working APIC, ignored\n", proc->apicid);
+        p += sizeof(struct mpproc);
+        continue;
+      }
+      if(ncpu >= NCPU){
+        cprintf("mpinit: more than %d cpus, ignoring cpu%d\n",
+          NCPU, proc->apicid);
+        p += sizeof(struct mpproc);
+        continue;
+      }
+      if(ncpu != proc->apicid){
+        cprintf("mpinit: ncpu=%d apicid=%d\n", ncpu, proc->apicid);
+      }
+      cpus[ncpu].apicid = proc->apicid;  // apicid may differ from ncpu
+      ncpu++;
       p += sizeof(struct mpproc);
       continue;
     case MPIOAPIC:
       ioapic = (struct mpioapic*)p;
-      ioapicid = ioapic->apicno;
+      if(!(ioapic->flags & MP_APIC_ENABLED)){
+        cprintf("mpinit: ioapic %d disabled, ignored\n", ioapic->apicid);
+        p += sizeof(struct mpioapic);
+        continue;
+      }
+      ioapicid = ioapic->apicid;
       p += sizeof(struct mpioapic);
       continue;
     case MPBUS:
