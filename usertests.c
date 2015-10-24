@@ -8,9 +8,12 @@
 #include "traps.h"
 #include "memlayout.h"
 
+#define TEST_NAME "usertests"
+#include "318_test-tapish.h"
+
 char buf[8192];
 char name[3];
-char *echoargv[] = { "echo", "ALL", "TESTS", "PASSED", 0 };
+char *echoargv[] = { "echo", "ALL", "TESTS", "PASSED", "\n" TEST_PREFIX "ok -", 0 };
 int stdout = 1;
 
 // does chdir() call iput(p->cwd) in a transaction?
@@ -1736,11 +1739,9 @@ int
 main(int argc, char *argv[])
 {
   printf(1, "usertests starting\n");
+  TEST_STRT(1);
 
-  if(open("usertests.ran", 0) >= 0){
-    printf(1, "already ran user tests -- rebuild fs.img\n");
-    exit();
-  }
+  TEST_EXIT_IF(open("usertests.ran", 0) >= 0, "already ran user tests -- rebuild fs.img");
   close(open("usertests.ran", O_CREATE));
 
   createdelete();
@@ -1748,6 +1749,7 @@ main(int argc, char *argv[])
   concreate();
   fourfiles();
   sharedfd();
+  TEST_DIAG("group 1");
 
   bigargtest();
   bigwrite();
@@ -1755,20 +1757,24 @@ main(int argc, char *argv[])
   bsstest();
   sbrktest();
   validatetest();
+  TEST_DIAG("group 2");
 
   opentest();
   writetest();
   writetest1();
   createtest();
+  TEST_DIAG("group 3");
 
   openiputtest();
   exitiputtest();
   iputtest();
+  TEST_DIAG("group 4");
 
   mem();
   pipe1();
   preempt();
   exitwait();
+  TEST_DIAG("group 5");
 
   rmdot();
   fourteen();
@@ -1784,6 +1790,7 @@ main(int argc, char *argv[])
   uio();
 
   exectest();
+  TEST_DIAG("group 6");
 
   exit();
 }
