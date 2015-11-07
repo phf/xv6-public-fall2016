@@ -103,13 +103,19 @@ cprintf(char *fmt, ...)
 }
 
 void
+prepanic(void)
+{
+  cli();
+  cons.locking = 0;
+}
+
+void
 panic(char *s)
 {
   int i;
   uint pcs[10];
 
-  cli();
-  cons.locking = 0;
+  prepanic();
   cprintf("cpu with apicid %d: panic: ", cpu->apicid);
   cprintf(s);
   cprintf("\n");

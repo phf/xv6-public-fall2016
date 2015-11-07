@@ -25,6 +25,7 @@ void            cmostime(struct rtcdate *r);
 void            consoleinit(void);
 void            cprintf(char*, ...);
 void            consoleintr(int(*)(void));
+void            prepanic(void);
 void            panic(char*) __attribute__((noreturn));
 
 // debug.c
