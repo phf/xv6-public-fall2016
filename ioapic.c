@@ -59,8 +59,10 @@ ioapicinit(void)
     ioapic = (volatile struct ioapic*)IOAPIC;
     cprintf("ioapicinit: falling back to default ioapic address\n");
   }
-  maxintr = (ioapicread(REG_VER) >> 16) & 0xFF; // bits 16..23, see datasheet
-  id = (ioapicread(REG_ID) >> 24) & 0x0F;  // bits 24..27, see datasheet
+  // bits 16..23, see datasheet
+  maxintr = (ioapicread(REG_VER) >> 16) & 0xFF;
+  // bits 24..27, see datasheet
+  id = (ioapicread(REG_ID) >> 24) & 0x0F;
   if(id != ioapicid)
     cprintf("ioapicinit: id isn't equal to ioapicid; not a MP\n");
 
@@ -87,5 +89,6 @@ ioapicenable(int irq, int cpunum)
   // enabled, and routed to the given cpunum,
   // which happens to be that cpu's APIC ID.
   ioapicwrite(REG_TABLE+2*irq, T_IRQ0 + irq);
-  ioapicwrite(REG_TABLE+2*irq+1, cpunum << 24); // bits 56..59, see datasheet
+  // bits 56..59, see datasheet
+  ioapicwrite(REG_TABLE+2*irq+1, cpunum << 24);
 }

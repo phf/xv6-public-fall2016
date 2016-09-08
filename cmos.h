@@ -1,11 +1,13 @@
-// Access is through these two I/O addresses. Select a register by writing to
-// CMOS_PORT, then read/write data from/to that register through CMOS_RETURN.
+// Access is through these two I/O addresses. Select a register by
+// writing to CMOS_PORT, then read/write data from/to that register
+// through CMOS_RETURN.
 //
-// Note that due to general IBM insanity bit 7 of CMOS_PORT controls whether
-// NMIs get to "the" CPU or not. All of xv6 has ignored this issue for years,
-// so we do the same. But this technically makes CMOS_PORT a 7-bit address
-// and the CMOS cannot have more than 128 registers. The original Motorola
-// MC146818 in fact had 64 registers (only AD0-AD5 were used for addresses).
+// Note that due to general IBM insanity bit 7 of CMOS_PORT controls
+// whether NMIs get to "the" CPU or not. All of xv6 has ignored this
+// issue for years, so we do the same. But this technically makes
+// CMOS_PORT a 7-bit address and the CMOS cannot have more than 128
+// registers. The original Motorola MC146818 in fact had 64 registers
+// (only AD0-AD5 were used for addresses).
 #define CMOS_PORT    0x70
   #define CMOS_NMI_BIT    (1 << 7)  // NMI enabled
 #define CMOS_RETURN  0x71

@@ -23,11 +23,11 @@
 #define UART_SCRATCH            7       // read/write
 
 // Bits in the line control register.
-#define UART_DIVISOR_LATCH      (1 << 7)        // Unlock divisor latch.
+#define UART_DIVISOR_LATCH      (1 << 7)    // Unlock divisor latch.
 
 // Bits in the line status register.
-#define UART_TRANSMIT_READY     (1 << 5)        // Can send more data.
-#define UART_RECEIVE_READY      (1 << 0)        // Have received some data.
+#define UART_TRANSMIT_READY     (1 << 5)    // Can send more data.
+#define UART_RECEIVE_READY      (1 << 0)    // Have received some data.
 
 // Bits in the interrupt enable register.
-#define UART_RECEIVE_INTERRUPT  (1 << 0)        // Have received some data.
+#define UART_RECEIVE_INTERRUPT  (1 << 0)    // Have received some data.

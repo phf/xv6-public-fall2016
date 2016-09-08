@@ -7,6 +7,7 @@ x86.h
 asm.h
 mmu.h
 elf.h
+date.h
 
 # entering xv6
 entry.S
@@ -34,6 +35,7 @@ syscall.c
 sysproc.c
 
 # file system
+ide.h
 buf.h
 fcntl.h
 stat.h
@@ -63,7 +65,10 @@ kbd.h
 kbd.c
 console.c
 timer.c
+uart.h
 uart.c
+cmos.h
+cmos.c
 
 # user-level
 initcode.S
@@ -75,3 +80,5 @@ sh.c
 bootasm.S
 bootmain.c
 
+# utilities
+debug.c

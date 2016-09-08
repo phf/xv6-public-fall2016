@@ -89,7 +89,8 @@ trap(struct trapframe *tf)
     if(proc == 0 || (tf->cs&3) == 0){
       prepanic();
       // In kernel, it must be our mistake.
-      cprintf("unexpected trap %d err %d on cpu %d eip %x addr 0x%x eflags 0x%x\n",
+      cprintf("unexpected trap %d err %d"
+              "on cpu %d eip %x addr 0x%x eflags 0x%x\n",
               tf->trapno, tf->err, cpunum(), tf->eip, rcr2(), tf->eflags);
       panic("trap");
     }

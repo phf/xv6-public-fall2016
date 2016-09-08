@@ -32,14 +32,14 @@ struct mpproc {         // processor table entry
   uchar apicid;                 // local APIC id
   uchar version;                // local APIC verison
   uchar flags;                  // CPU flags
-    #define MP_PROC_ENABLED (1 << 0)  // Usable by the OS.
-    #define MP_PROC_BOOT (1 << 1)     // Bootstrap processor.
+    #define MP_PROC_ENABLED (1 << 0) // Usable by the OS.
+    #define MP_PROC_BOOT (1 << 1)    // Bootstrap processor.
   uchar signature[4];           // CPU signature
   uint feature;                 // feature flags from CPUID instruction
-    #define MP_PROC_FPU (1 << 0)      // Has a floating point unit.
-    #define MP_PROC_MCE (1 << 7)      // Supports machine check exception.
-    #define MP_PROC_CX8 (1 << 8)      // Supports 8-byte compare-and-exchange.
-    #define MP_PROC_APIC (1 << 9)     // Integrated APIC present and enabled.
+    #define MP_PROC_FPU (1 << 0)  // Has a floating point unit.
+    #define MP_PROC_MCE (1 << 7)  // Supports machine check exception.
+    #define MP_PROC_CX8 (1 << 8)  // Supports 8-byte compare-and-exchange.
+    #define MP_PROC_APIC (1 << 9) // Integrated APIC present and enabled.
   uchar reserved[8];
 };
 

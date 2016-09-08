@@ -16,19 +16,20 @@
 static int uart;  // do we have a second uart?
 static volatile uint locked;  // custom lock
 
-// We use the intena parameter to remember if interrupts were enabled (or not)
-// before we disabled them as part of taking the lock. The actual variable for
-// this is in debugf() below. Because it lives on the stack of whoever called
-// debugf(), we don't have to worry about which CPU we're on. The spinlocks in
-// xv6 presumably pay that prize to make their interface simpler?
+// We use the intena parameter to remember if interrupts were enabled
+// (or not) before we disabled them as part of taking the lock. The
+// actual variable for this is in debugf() below. Because it lives on
+// the stack of whoever called debugf(), we don't have to worry about
+// which CPU we're on. The spinlocks in xv6 presumably pay that prize
+// to make their interface simpler?
 
 static void
 lock(int *intena)
 {
   *intena = readeflags() & FL_IF;
-  // Migration is possible *right here*, but if so, FL_IF was asserted when
-  // we sampled it and is still asserted now. That holds true up until the
-  // CLI instruction itself. (Also see TRICKS.)
+  // Migration is possible *right here*, but if so, FL_IF was asserted
+  // when we sampled it and is still asserted now. That holds true up
+  // until the CLI instruction itself. (Also see TRICKS.)
   cli();
   while(xchg(&locked, 1) != 0)
     ;
@@ -85,8 +86,8 @@ debuginit(void)
   inb(COM2+UART_RECEIVE_BUFFER);
 }
 
-// It's certainly sad that we have to replicate the printf code *again* for
-// this module. Alas there doesn't seem to be a nice way to modularize.
+// It's certainly sad that we have to replicate the printf code *again*
+// here. Alas there doesn't seem to be a nice way to modularize. Yet.
 
 static void
 printint(int xx, int base, int sign)
