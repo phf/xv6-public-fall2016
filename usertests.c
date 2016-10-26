@@ -1727,6 +1727,35 @@ uio()
   printf(1, "uio test done\n");
 }
 
+void
+argptest()
+{
+  int fd;
+  printf(1, "argptest\n");
+  fd = open("/init", O_RDONLY);
+  if (fd < 0) {
+    printf(2, "argptest: open /init failed\n");
+    exit();
+  }
+  if(read(fd, sbrk(0)-1, -1) < 0) {
+    printf(1, "argptest: read with -1 size failed (good)\n");
+  }
+  if(read(fd, 0, -1) < 0) {
+    printf(1, "argptest: read with -1 size failed (good)\n");
+  }
+  if(read(fd, sbrk(0)-1, 1) < 0) {
+    printf(1, "argptest: read at sbrk(0)-1 len 1 failed (bad!)\n");
+  }
+  if(read(fd, sbrk(0)-1, 2) < 0) {
+    printf(1, "argptest: read at sbrk(0)-1 len 2 failed (good)\n");
+  }
+  if(read(fd, sbrk(0), 1) < 0) {
+    printf(1, "argptest: read at sbrk(0) failed (good)\n");
+  }
+  close(fd);
+  printf(1, "argptest passed\n");
+}
+
 unsigned long randstate = 1;
 unsigned int
 rand()
@@ -1744,6 +1773,7 @@ main(int argc, char *argv[])
   TEST_EXIT_IF(open("usertests.ran", 0) >= 0, "already ran user tests -- rebuild fs.img");
   close(open("usertests.ran", O_CREATE));
 
+  argptest();
   createdelete();
   linkunlink();
   concreate();
