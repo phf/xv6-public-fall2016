@@ -185,6 +185,48 @@ UPROGS=\
 	_wc\
 	_zombie\
 
+# UPROGS += _318_dmr
+_318_dmr: 
+
+# UPROGS += _318_ts1
+_318_ts1: 
+
+# UPROGS += _318_uspin1
+_318_uspin1: uspin.o
+
+# UPROGS += _318_uspin2
+_318_uspin2: uspin.o
+
+# UPROGS += _318_uspin3
+_318_uspin3: uspin.o
+
+# UPROGS += _318_usem1
+_318_usem1: uspin.o usem.o
+
+# UPROGS += _318_usem2
+_318_usem2: uspin.o usem.o
+
+# UPROGS += _318_usem3
+_318_usem3: uspin.o usem.o
+
+# UPROGS += _318_join_main
+_318_join_main: uspin.o usem.o uthr.o
+
+# UPROGS += _318_main_te
+_318_main_te: uspin.o usem.o uthr.o
+
+# UPROGS += _318_tc1
+_318_tc1: uspin.o usem.o uthr.o
+
+# UPROGS += _318_tcj1
+_318_tcj1: uspin.o usem.o uthr.o
+
+# UPROGS += _318_tcj2
+_318_tcj2: uspin.o usem.o uthr.o
+
+# UPROGS += _318_usem_ring
+_318_usem_ring: uspin.o usem.o uthr.o
+
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)
 
@@ -193,7 +235,7 @@ fs.img: mkfs README $(UPROGS)
 clean: 
 	rm -f *.tex *.dvi *.idx *.aux *.log *.ind *.ilg \
 	*.o *.d *.asm *.sym vectors.S bootblock entryother \
-	initcode initcode.out kernel xv6.img fs.img kernelmemfs mkfs \
+	initcode initcode.out xv6.img fs.img kernelmemfs mkfs \
 	.gdbinit \
 	$(UPROGS)
 
@@ -287,3 +329,4 @@ tar:
 	(cd /tmp; tar cf - xv6) | gzip >xv6-rev9.tar.gz  # the next one will be 9 (6/27/15)
 
 .PHONY: dist-test dist
+
